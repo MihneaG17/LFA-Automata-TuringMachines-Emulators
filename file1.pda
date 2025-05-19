@@ -1,0 +1,35 @@
+#PDA care recunoaste sirurile de forma a^n b^n cu n>=0
+#Exemplu: "", "ab", "aabb", "aaabbb" etc
+
+<states>
+q0 q1 q2
+<end>
+
+<alphabet>
+a b
+<end>
+
+<stack_alphabet>
+A Z
+<end>
+
+<transitions>
+q0 a Z q0 AZ
+q0 a A q0 AA
+q0 b A q1 epsilon
+q1 b A q1 epsilon
+q1 epsilon Z q2 epsilon
+q0 epsilon Z q2 epsilon
+<end>
+
+<initial_state>
+q0
+<end>
+
+<accept_states>
+q2
+<end>
+
+<initial_stack_symbol>
+Z
+<end>

@@ -1,0 +1,27 @@
+#NFA care accepta siruri care contin cel putin un 1 si oricati de 0
+<states>
+q0 q1 q2 q3
+<end>
+
+<alphabet> #Alfabet
+0 1
+<end>
+
+<transitions>
+q0 epsilon q1
+q0 epsilon q2
+q1 1 q1
+q1 1 q3
+q2 0 q2
+q2 1 q3
+q3 0 q3
+q3 1 q3
+<end>
+
+<initial_state>
+q0
+<end>
+
+<accept_states>
+q3
+<end>

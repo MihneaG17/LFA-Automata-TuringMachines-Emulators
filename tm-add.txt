@@ -1,0 +1,37 @@
+<states>
+STATE_A STATE_B STATE_C STATE_STOP
+<end>
+
+<input_alphabet>
+0 + $
+<end>
+
+<tape_alphabet>
+0 + $ B #B este simbolul blank (spatiu gol)
+<end>
+
+<blank_symbol>
+B
+<end>
+
+<initial_state>
+STATE_A
+<end>
+
+<stop_state>
+STATE_STOP 
+<end>
+
+<transitions>
+#StareCurenta CaracterCitit StareUrmatoare CaracterScris Miscare (L/R/S)
+
+STATE_A 0 STATE_A 0 R
+STATE_A + STATE_B 0 R
+STATE_A $ STATE_STOP $ S #in cazul in care avem input invalid (gasim $ inainte de +)
+
+
+STATE_B 0 STATE_B 0 R
+STATE_B $ STATE_C $ L
+
+STATE_C 0 STATE_STOP $ S
+<end>
