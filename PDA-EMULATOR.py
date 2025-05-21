@@ -106,6 +106,7 @@ def PdaReadFromFile(filename):
     }
 
 def PdaEpsilonClosure(pda, current_configs):
+    #gaseste configuratiile ce pot fi atinse prin epssilon
     reachable_configs=set(current_configs)
     configs_to_process=list(current_configs) #lista folosita pe post de stiva pentru explorare
 
@@ -115,7 +116,7 @@ def PdaEpsilonClosure(pda, current_configs):
 
         stack_top=current_stack[-1] if current_stack else None
 
-        transition_key=(current_state, "epsilon", stack_top) if stack_top is not None else None
+        transition_key=(current_state, "epsilon", stack_top) if stack_top is not None else None #tranzitia e de forma stare epsilon simbol
 
         possible_destinations=pda['transitions'].get(transition_key, []) if transition_key else []
 
@@ -123,13 +124,13 @@ def PdaEpsilonClosure(pda, current_configs):
             new_stack=current_stack[:-1] if stack_top is not None else list(current_stack)
 
             if stack_push_str != "epsilon":
-                new_stack.extend(list(stack_push_str[::-1]))
+                new_stack.extend(list(stack_push_str[::-1])) #inversez simbolurile pe care le adaug pe stiva 
             
             new_config = (dest_state, tuple(new_stack))
 
             if new_config not in reachable_configs:
                 reachable_configs.add(new_config)
-                configs_to_process.append(new_config)
+                configs_to_process.append(new_config) #verificam si configuratia abia adaugata pentru a vedea daca are reachable_configs cu epsilon
         
         return reachable_configs
 
@@ -144,7 +145,7 @@ def PdaEmulator(pda, input_str):
 
     processed_input = input_str.strip()
 
-    #Tratam cazul sirului vid inainte de a intra in bucla
+    #tratez cazul sirului vid inainte de a intra in bucla
     if not processed_input:
          print("Sirul de intrare este vid.")
          for state, stack_content in current_configurations:
@@ -154,14 +155,13 @@ def PdaEmulator(pda, input_str):
 
 
     for symbol in processed_input:
-
-        #Validare pentru simbolul de intrare
+        #validare pentru simbolul de intrare
         if symbol not in pda['alphabet']:
             print(f"Eroare: Simbolul {symbol} nu se afla in alphabet.")
             return False
         
-        #Setul de configuratii atinse dupa consumarea simbolului curent
-        next_configurations_after_symbol: set[tuple[str, tuple[str, ...]]] = set()
+        #setul de configuratii atinse dupa consumarea simbolului curent
+        next_configurations_after_symbol= set()
         
         for current_state, current_stack_tuple in current_configurations:
             current_stack = list(current_stack_tuple)

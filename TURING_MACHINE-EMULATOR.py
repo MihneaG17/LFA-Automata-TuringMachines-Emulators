@@ -121,7 +121,7 @@ def TMEmulator(tm_definition, input_str):
     transitions=tm_definition['transitions']
 
     tape=list(input_str)
-    tape.extend([blank_symbol]*max(50, len(input_str))) #adaugam blank-uri de padding la final
+    tape.extend([blank_symbol]*max(50, len(input_str))) #adaugam blank-uri de padding la final - head se va tot deplasa de-a lungul benzii, pentru a nu iesi din range-ul benzii adaug padding-uri suplimentare
 
     head=0
     state=initial_state
@@ -163,9 +163,9 @@ def TMEmulator(tm_definition, input_str):
             else:
                 tape[head]=write_char
             
-            if move=='R':
+            if move=='R': #right
                 head+=1
-            elif move=='L':
+            elif move=='L': #left
                 head-=1
             #daca e S (Stay), nu se intampla nimic, capul ramane la pozitia actuala
 

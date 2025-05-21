@@ -23,7 +23,7 @@ def NfaReadFromFile(filename):
                     sectiuni[sectiune_curenta]=[]
             elif sectiune_curenta:
                 sectiuni[sectiune_curenta].append(line)
-    #Validare aditionala a continutului fisierului (sa fiu sigur ca definitia NFA-ului contine toate componentele sale)
+    #validare aditionala a continutului fisierului (sa fiu sigur ca definitia NFA-ului contine toate componentele sale)
     required_sections=['states', 'alphabet', 'transitions', 'initial_state', 'accept_states']
     for section in required_sections:
         if section not in sectiuni or not sectiuni[section]:
@@ -60,7 +60,7 @@ def NfaReadFromFile(filename):
         parts=transition.split()
         if len(parts)==3:
             state1,symbol,state2=parts
-            #Validare pentru parsare
+            #validare pentru parsare
             if state1 not in states:
                 print("Eroare in sectiunea de tranzitii: O stare sursa nu este definita")
                 return
@@ -68,7 +68,7 @@ def NfaReadFromFile(filename):
                 print("Eroare in sectiunea de tranzitii: O stare destinatie nu este definita")
                 return
 
-            if symbol=="epsilon":
+            if symbol=="epsilon": #daca avem epsilon ca si tranzitie, adaug tranzitia in epsilon_transitions pentru a 0 trata diferit fata de tranzitiile normale
                 if state1 not in epsilon_transitions:
                     epsilon_transitions[state1]=set()
                 epsilon_transitions[state1].add(state2)
@@ -94,6 +94,7 @@ def EpsilonString(nfa,states): #handle-uieste cazurile in care simbolul din func
     epsilon_states=set(states) #multimea de stari accesibile prin epsilon
     stack=list(states) #stiva care parcurge starile atinse prin epsilon - in stiva este starea initiala
 
+    #sunt parcurse toate starile accesibile prin tranzitii epsilon
     while stack:
         state=stack.pop()
         if state in nfa['epsilon_transitions']:
@@ -109,12 +110,14 @@ def NfaEmulator(nfa,input_str):
         print("Eroare la citirea NFA-ului")
         return False
 
-    current_states=EpsilonString(nfa, {nfa['initial_state']})
-    
+    current_states=EpsilonString(nfa, {nfa['initial_state']}) #starile curente initiale includ toate starile accesibile din starea initiala prin epsilon
+    #in current_states practic se afla multimea de stari in care ne putem afla inainte de consumarea unui simbol
+
     for symbol in input_str.strip():
         if symbol not in nfa['alphabet']:
             print(f"Eroare: Simbolul {symbol} nu se afla in alfabet")
             return False
+        
         next_states=set()
 
         for state in current_states:
@@ -125,7 +128,7 @@ def NfaEmulator(nfa,input_str):
             print(f"Nicio stare accesibila dupa consumarea simbolului {symbol}")
             return False
         
-        current_states=EpsilonString(nfa, next_states)
+        current_states=EpsilonString(nfa, next_states) #dupa consumarea simbolului si aplicarea EpsilonString, next_states devine noul current_states
     
     return bool(current_states & nfa['accept_states'])
 

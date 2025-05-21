@@ -23,7 +23,7 @@ def dfaReadFromFile(filename):
             elif sectiune_curenta:
                 sectiuni[sectiune_curenta].append(line)
 
-    #Validare extra pentru parsare-verific daca in fisier sunt prezente toate sectiunile necesare descrierii unui DFA
+    #validare extra pentru parsare-verific daca in fisier sunt prezente toate sectiunile necesare descrierii unui DFA
     required_sections = ['states', 'alphabet', 'initial_state', 'accept_states', 'transitions']
     for section in required_sections:
         if section not in sectiuni or not sectiuni[section]:
@@ -56,7 +56,7 @@ def dfaReadFromFile(filename):
         parts=transition.split()
         if len(parts)==3:
             state1,symbol,state2=parts
-            #Verificari suplimentare pentru corectitudinea definirii DFA-ului
+            #verificari suplimentare pentru corectitudinea definirii DFA-ului
             if state1 not in states:
                 print("Eroare in sectiunea de tranzitii: O stare sursa nu este definita")
                 return
