@@ -180,21 +180,14 @@ def TMEmulator(tm_definition, input_str):
     
     final_tape_str_stripped=''.join(tape).rstrip(blank_symbol) #eliminam blank-urile din sirul final
 
-    try:
-        final_dollar_index=final_tape_str_stripped.find('$')
-        if final_dollar_index!=-1:
-            result_string=final_tape_str_stripped[:final_dollar_index+1]
-            return result_string
-        else:
-            return final_tape_str_stripped
-    
-    except Exception as e:
-        print("Eroare la construirea sirului rezultat")
-        return final_tape_str_stripped
+    final_tape_str=''.join(tape)
+    final_tape_str_stripped=final_tape_str.rstrip(blank_symbol) #elimin blank-urile de padding de la sfarsit
+    return final_tape_str_stripped
     
 
 tm_add_definition=TmReadFromFile("tm-add.txt")
 input_str=input("Introduceti sirul:")
 print(TMEmulator(tm_add_definition,input_str))
+
 
 
