@@ -178,8 +178,25 @@ def TMEmulator(tm_definition, input_str):
     if halted:
         print("Emularea s-a oprit din cauza unei erori.")
     
+    '''
     final_tape_str_stripped=''.join(tape).rstrip(blank_symbol) #eliminam blank-urile din sirul final
+    try:
+        final_dollar_index=final_tape_str_stripped.find('$')Add commentMore actions
+        if final_dollar_index!=-1:
+            result_string=final_tape_str_stripped[:final_dollar_index+1]
+            return result_string
+        else:
+            return final_tape_str_stripped
+    
+    except Exception as e:
+        print("Eroare la construirea sirului rezultat")
+        return final_tape_str_stripped
 
+    *Aceasta bucata de cod elimina caracterul "$" de la finalul sirului, rezultatul fiind de forma:
+    00+00$->0000$.
+    *Am preferat sa nu merg pe aceasta varianta deoarece ar insemna ca masina turing e proiectata doar pentru operatia de adunare, ci nu pentru orice tip de operatie pe siruri
+    *Varianta finala, care nu e comentata, desi nu elimina $-ul in plus de la final (ex: 00+00$->0000$$), este mult mai dinamica, permitand operatii diverse pe siruri, nu doar o simpla adunare.
+    '''
     final_tape_str=''.join(tape)
     final_tape_str_stripped=final_tape_str.rstrip(blank_symbol) #elimin blank-urile de padding de la sfarsit
     return final_tape_str_stripped
